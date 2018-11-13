@@ -1,7 +1,7 @@
 import requests
 import os
 import urllib3
-from Toolbox import json_to_data
+from Toolbox import json_to_data, df_to_value
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 URL = os.environ['URL']
@@ -24,5 +24,8 @@ def get_data(endpointapi, date=None, full_response=False, columns=list()):
 
 
 if __name__ == '__main__':
-    result = get_data("/asset", columns=['ASSET_DATABASE_ID', 'LABEL'])
+    result = get_data("/asset", columns=['ASSET_DATABASE_ID', 'LABEL', 'TYPE'])
     df = json_to_data(result)
+    df = df_to_value(df)
+    df = df[df.TYPE == "STOCK"]
+    print("End")
