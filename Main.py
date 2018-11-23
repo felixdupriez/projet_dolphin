@@ -26,12 +26,30 @@ def get_data(endpointapi, date=None, full_response=False, columns=list(), payloa
     return res.content.decode('utf-8')
 
 
+def post_data(endpointapi, date=None, full_response=False, columns=list(), json=None):
+    if json is None:
+        json = {'date': date, 'fullResponse': full_response}
+    res = requests.post(URL + endpointapi + columns_to_str(columns), json=json, auth=AUTH, verify=False)
+    return res.content.decode('utf-8')
+
+
 def get_quote(asset_id, start_date, end_date):
     payload = {'start_date': start_date, 'end_date': end_date}
     stock_nav = get_data("/asset/" + asset_id + "/quote", payload=payload)
     if stock_nav == '[]':
         return
     return json.loads(stock_nav)[0]['nav']['value']
+
+
+def get_ratio(asset_id):
+    sharpe_id = 20
+    performance_id = 21
+    volatility_id = 18
+    json = {"ratio": [sharpe_id, performance_id, volatility_id], "asset": [asset_id]}
+    ratio_invoke = post_data("/ratio/invoke", json=json)
+    if ratio_invoke == '[]':
+        return
+    return ratio_invoke
 
 
 def add_nav_col(df, column_name, start_date, end_date):
