@@ -51,12 +51,34 @@ def get_ratio(asset_id):
         return
     return ratio_invoke
 
+def get_ratios(assets_id):
+    sharpe_id = 20
+    performance_id = 21
+    volatility_id = 18
+    for asset_id in assets_id :
+        json = {"ratio": [sharpe_id, performance_id, volatility_id], "asset": [asset_id]}
+        ratio_invoke = post_data("/ratio/invoke", json=json)
+
+    if ratio_invoke == '[]':
+        return
+    return ratio_invoke
+
+
 
 def add_nav_col(df, column_name, start_date, end_date):
     df[column_name] = 0
     for index, row in df.iterrows():
         df.loc[index, column_name] = get_quote(row.ASSET_DATABASE_ID, start_date, end_date)
     df[column_name] = df[column_name].str.replace(',', ".").astype(float)
+    return df
+
+def add_ratio_col(df):
+    for index, row in df.iterrows():
+        data = get_ratio(row.ASSET_DATABASE_ID)
+        data = json.loads(data)["%s" % row.ASSET_DATABASE_ID]
+        df.loc[index, "Sharp"] = data["20"]["value"]
+        df.loc[index, "Performance"] = data["21"]["value"]
+        df.loc[index, "Volatility"] = data["18"]["value"]
     return df
 
 
@@ -68,9 +90,9 @@ if __name__ == '__main__':
     #df = add_nav_col(df, 'NAV_2018_11_12', '2018-11-13', '2018-11-13')
     #df.to_csv('export', sep='\t', encoding='utf-8', index=False)      #Exporter le Dataframe en csv
     #df = df[df.TYPE == "STOCK"]
-    #df = add_nav_col(df, 'NAV_2012_01_02')
-    #df.to_csv('export', sep='\t', encoding='utf-8', index=False)
     df = pd.read_csv('export', sep='\t')
-    df = df[(df.NAV_2012_01_02 >= 1) & (df.NAV_2012_01_02 <= 10) & (df.TYPE == 'STOCK')]
-    print("Nombre d'action avec un NAV entre 1% et 10% au 2 janvier 2012 :", len(df.index))
+    df = add_ratio_col(df)
+    df.to_csv('export2', sep='\t', encoding='utf-8', index=False)
+    #df = add_nav_col(df, [18, 20, 21])
+    #df = df[(df.NAV_2012_01_02 >= 1) & (df.NAV_2012_01_02 <= 10) & (df.TYPE == 'STOCK')]
     #print('test')
