@@ -77,7 +77,7 @@ def add_ratio_col(df):
     for index, row in df.iterrows():
         data = get_ratio(row.ASSET_DATABASE_ID)
         data = json.loads(data)["%s" % row.ASSET_DATABASE_ID]
-        df.loc[index, "Sharp"] = data["20"]["value"]
+        df.loc[index, "Sharpe"] = data["20"]["value"]
         df.loc[index, "Performance"] = data["21"]["value"]
         df.loc[index, "Volatility"] = data["18"]["value"]
         print("%d / %d" , index, df_size)
