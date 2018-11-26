@@ -73,12 +73,14 @@ def add_nav_col(df, column_name, start_date, end_date):
     return df
 
 def add_ratio_col(df):
+    df_size = len(df.index)
     for index, row in df.iterrows():
         data = get_ratio(row.ASSET_DATABASE_ID)
         data = json.loads(data)["%s" % row.ASSET_DATABASE_ID]
         df.loc[index, "Sharp"] = data["20"]["value"]
         df.loc[index, "Performance"] = data["21"]["value"]
         df.loc[index, "Volatility"] = data["18"]["value"]
+        print("%d / %d" , index, df_size)
     return df
 
 
@@ -91,8 +93,9 @@ if __name__ == '__main__':
     #df.to_csv('export', sep='\t', encoding='utf-8', index=False)      #Exporter le Dataframe en csv
     #df = df[df.TYPE == "STOCK"]
     df = pd.read_csv('export', sep='\t')
+    df = df[(df.NAV_2012_01_02 >= 1) & (df.NAV_2012_01_02 <= 10) & (df.TYPE == 'STOCK')]
     df = add_ratio_col(df)
     df.to_csv('export2', sep='\t', encoding='utf-8', index=False)
     #df = add_nav_col(df, [18, 20, 21])
-    #df = df[(df.NAV_2012_01_02 >= 1) & (df.NAV_2012_01_02 <= 10) & (df.TYPE == 'STOCK')]
+
     #print('test')
