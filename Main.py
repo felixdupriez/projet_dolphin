@@ -83,6 +83,9 @@ def add_ratio_col(df):
         print("%d / %d" , index, df_size)
     return df
 
+def get_unique_curr(df):
+    currs = df.CURRENCY.unique()
+    return currs
 
 if __name__ == '__main__':
     #result = get_data("/asset", columns=['ASSET_DATABASE_ID', 'LABEL', 'TYPE', 'MODIFICATION_DATE', 'CURRENCY'])
@@ -92,10 +95,12 @@ if __name__ == '__main__':
     #df = add_nav_col(df, 'NAV_2018_11_12', '2018-11-13', '2018-11-13')
     #df.to_csv('export', sep='\t', encoding='utf-8', index=False)      #Exporter le Dataframe en csv
     #df = df[df.TYPE == "STOCK"]
+
     df = pd.read_csv('export', sep='\t')
-    df = df[(df.NAV_2012_01_02 >= 1) & (df.NAV_2012_01_02 <= 10) & (df.TYPE == 'STOCK')]
-    df = add_ratio_col(df)
-    df.to_csv('export2', sep='\t', encoding='utf-8', index=False)
+    #df = df[(df.NAV_2012_01_02 >= 1) & (df.NAV_2012_01_02 <= 10) & (df.TYPE == 'STOCK')]
+    #df = add_ratio_col(df)
+    #df.to_csv('export2', sep='\t', encoding='utf-8', index=False)
+    get_unique_curr(df)
     #df = add_nav_col(df, [18, 20, 21])
 
     #print('test')
