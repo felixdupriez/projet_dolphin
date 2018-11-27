@@ -40,6 +40,13 @@ def post_data(endpointapi, date=None, full_response=False, columns=list(), json=
     return res.content.decode('utf-8')
 
 
+def put_data(endpointapi, date=None, full_response=False, columns=list(), json=None):
+    if json is None:
+        json = {'date': date, 'fullResponse': full_response}
+    res = requests.put(URL + endpointapi + columns_to_str(columns), json=json, auth=AUTH, verify=False)
+    return res.content.decode('utf-8')
+
+
 def get_ratios(assets_id):
     sharpe_id = 20
     performance_id = 21
@@ -79,6 +86,27 @@ def get_ratio(asset_id):
     if ratio_invoke == '[]':
         return
     return ratio_invoke
+
+
+def get_portfolio():
+    portfolio_id = "1031"
+    portfolio = get_data("/portfolio/" + portfolio_id +"/dyn_amount_compo")
+    if portfolio == '[]':
+        return
+    return portfolio
+
+
+def put_portfolio():
+    portfolio_id = "1031"
+    json = {"currency": {"code": "EUR"},
+            "label": "mines_ptf_6",
+            "type": "front",
+            "values": {"2012-01-02": [{"asset": {"asset": 906, "quantity": 2}}]}
+            }
+    portfolio = put_data("/portfolio/" + portfolio_id + "/dyn_amount_compo", json=json)
+    if portfolio == '[]':
+        return
+    return portfolio
 
 #Fix later
 def compute_sharpe(df):
