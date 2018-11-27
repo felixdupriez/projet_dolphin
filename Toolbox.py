@@ -79,3 +79,11 @@ def get_ratio(asset_id):
     if ratio_invoke == '[]':
         return
     return ratio_invoke
+
+#Fix later
+def compute_sharpe(df):
+    ref = 0 #Taux de placement sans riques
+    ret = 0 #Rendement de l'actif sur la période
+    vola = 0 #Volatilité de l'actif
+    sharpe = (ret - ref)/vola
+    return sharpe
