@@ -63,8 +63,7 @@ def get_ratios(assets_id):
     if ratio_invoke == '[]':
         return
     return ratio_invoke
-
-
+    
 def add_nav_col(df, column_name, start_date, end_date):
     df[column_name] = 0
     for index, row in df.iterrows():
@@ -90,9 +89,11 @@ def convert_currency(df):
     print('test')
     return df
 
+
 def get_unique_curr(df):
     currs = df.CURRENCY.unique()
     return currs
+
 
 if __name__ == '__main__':
     #result = get_data("/asset", columns=['ASSET_DATABASE_ID', 'LABEL', 'CURRENCY', 'TYPE', 'SUB_TYPE', 'MODIFICATION_DATE'])
