@@ -96,13 +96,41 @@ def get_portfolio():
     return portfolio
 
 
-def put_portfolio():
+# def put_portfolio(assets):
+#     portfolio_id = "1031"
+#     str = "{\"asset\": "
+#     for asset in assets[:-1]:
+#         str += asset[id] + ", \"quantity\": " + asset[quantity] + ","
+#     str += asset[-1][id] + ", \"quantity\": " + asset[quantity] + "}"
+#     # json = {"currency": {"code": "EUR"},
+#     #         "label": "epita_ptf_4",
+#     #         "type": "front",
+#     #         "values": {"2012-01-02": [
+#     #             {"assets": [
+#     #                 {"asset": 915, "quantity": 5},
+#     #                 {"asset": 907, "quantity": 2}
+#     #             ]}
+#     #         ]}}
+#     json = {"currency": {"code": "EUR"},
+#             "label": "epita_ptf_4",
+#             "type": "front",
+#             "values": {"2012-01-02": [
+#                 {"assets": [
+#                     str
+#                 ]}
+#             ]}}
+#     portfolio = put_data("/portfolio/" + portfolio_id + "/dyn_amount_compo", json=json)
+#     if portfolio == '[]':
+#         return
+#     return portfolio
+
+
+def put_portfolio_exemple():
     portfolio_id = "1031"
     json = {"currency": {"code": "EUR"},
-            "label": "mines_ptf_6",
+            "label": "epita_ptf_4",
             "type": "front",
-            "values": {"2012-01-02": [{"asset": {"asset": 906, "quantity": 2}}]}
-            }
+            "values": {"2012-01-02": [{"asset": {"asset": 906, "quantity": 2}}]}}
     portfolio = put_data("/portfolio/" + portfolio_id + "/dyn_amount_compo", json=json)
     if portfolio == '[]':
         return
