@@ -90,6 +90,9 @@ def convert_currency(df):
     print('test')
     return df
 
+def get_unique_curr(df):
+    currs = df.CURRENCY.unique()
+    return currs
 
 if __name__ == '__main__':
     #result = get_data("/asset", columns=['ASSET_DATABASE_ID', 'LABEL', 'CURRENCY', 'TYPE', 'SUB_TYPE', 'MODIFICATION_DATE'])
