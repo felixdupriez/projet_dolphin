@@ -17,7 +17,6 @@ def get_conversion_rates(currs):
     return rates
 
 
-
 def convert_to_eur(curr, amount):
     value = 0
     return value
