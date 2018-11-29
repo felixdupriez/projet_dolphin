@@ -21,7 +21,7 @@ def convert_to_eur(rates, df, target):
     for index, row in df.iterrows():
         curr = df.at[index, "CURRENCY"]
         amount = df.at[index, target]
-        amount = amount / rates.get(curr)
+        amount = amount * rates.get(curr)
         df.loc[index, target] = amount
         df.loc[index, "CURRENCY"] = 'EUR'
     return df
