@@ -4,8 +4,8 @@ import pandas as pd
 import json
 
 
-def export_as_csv(df, name):
-    df.to_csv(name, sep='\t', encoding='utf-8', index=False)
+def export_as_csv(df, name, index=False):
+    df.to_csv(name, sep='\t', encoding='utf-8', index=index)
 
 
 def import_csv(file):
@@ -52,10 +52,10 @@ def first_close(df):
     df.to_csv('export5', sep='\t', encoding='utf-8', index=False)
 
 
-def get_correlation(asset_id, benchmark):
+def get_correlation(asset_list, benchmark):
     correlation = 19
     content = json.dumps({'ratio': [correlation],
-            'asset': [asset_id],
+            'asset': asset_list,
             'benchmark': benchmark,
             'start_date': '2012-02-01',
             'end_date': '2018-08-01',
@@ -63,19 +63,17 @@ def get_correlation(asset_id, benchmark):
     return post_data("/ratio/invoke", json=content)
 
 
-def df_correlation(filtered_df):
-    listofitems = filtered_df['ASSET_DATABASE_ID'].tolist()
-    corr = pd.DataFrame(np.zeros(shape=(298, 298)), columns=listofitems, index=listofitems)
-    line = 0
-    for index, row in corr.iterrows():
-        print("Ligne %d/%d" % (++line, 298))
-        for column in corr:
-            if index == column:
-                corr[index][column] = 1     # 0.99939795304
-            elif corr[index][column] == 0:
-                tmp = get_correlation(int(index), int(column))
-                tmp = json.loads(tmp)[str(index)]['19']['value']
-                tmp = float(tmp.replace(',', '.'))
-                corr[index][column] = tmp
-                corr[column][index] = tmp
+def df_correlation(assets):
+    corr = pd.DataFrame(np.zeros(shape=(298, 298)), columns=assets, index=assets)
+    line = 1
+    for asset in assets:
+        print("Ligne %d/%d" % (line, 298))
+        line += 1
+        corr_json = json.loads(get_correlation(assets, asset))
+        for key in corr_json:
+            value = float(corr_json[key]['19']['value'].replace(',', '.'))
+            corr[asset][int(key)] = value
+            print(corr[asset][int(key)])
     return corr
+
+
