@@ -8,8 +8,12 @@ def export_as_csv(df, name, index=False):
     df.to_csv(name, sep='\t', encoding='utf-8', index=index)
 
 
-def import_csv(file):
-    return pd.read_csv(file, sep='\t')
+def import_csv(file, export=False):
+    df = pd.read_csv(file, sep='\t')
+    if export:
+        return df_string_to_float(df)
+    else:
+        return df
 
 
 def df_with_asset():
@@ -77,3 +81,11 @@ def df_correlation(assets):
     return corr
 
 
+def df_string_to_float(df):
+    df.Performance = df.Performance.str.replace(',', '.')
+    df.Performance = df.Performance.astype(float)
+    df.Sharpe = df.Sharpe.str.replace(',', '.')
+    df.Sharpe = df.Sharpe.astype(float)
+    df.Volatility = df.Volatility.str.replace(',', '.')
+    df.Volatility = df.Volatility.astype(float)
+    return df
