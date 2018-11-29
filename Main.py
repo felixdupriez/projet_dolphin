@@ -13,5 +13,8 @@ def generate_correlation_csv():
 
 if __name__ == '__main__':
     df = import_csv('asset_correlation')
+    cf = import_csv('export6', export=True)
+    filtered_cf = cf[cf['CLOSE_2012_01_02'].notnull()]
+    filtered_cf = filtered_cf.sort_values('Performance', ascending=False)
     df.set_index('Index', inplace=True)
     print('End')
