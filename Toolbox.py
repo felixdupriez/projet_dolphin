@@ -40,6 +40,13 @@ def post_data(endpointapi, date=None, full_response=False, columns=list(), json=
     return res.content.decode('utf-8')
 
 
+def put_data(endpointapi, date=None, full_response=False, columns=list(), json=None):
+    if json is None:
+        json = {'date': date, 'fullResponse': full_response}
+    res = requests.put(URL + endpointapi + columns_to_str(columns), json=json, auth=AUTH, verify=False)
+    return res.content.decode('utf-8')
+
+
 def get_ratios(assets_id):
     sharpe_id = 20
     performance_id = 21
@@ -78,6 +85,98 @@ def get_quote(asset_id, start_date, end_date):
     if stock_nav == '[]':
         return
     return json.loads(stock_nav)[0]['close']['value']
+
+
+def get_ratio(asset_id):
+    sharpe_id = 20
+    performance_id = 21
+    volatility_id = 18
+    json = {"ratio": [sharpe_id, performance_id, volatility_id], "asset": [asset_id]}
+    ratio_invoke = post_data("/ratio/invoke", json=json)
+    if ratio_invoke == '[]':
+        return
+    return ratio_invoke
+
+
+def get_portfolio():
+    portfolio_id = "1031"
+    portfolio = get_data("/portfolio/" + portfolio_id +"/dyn_amount_compo")
+    if portfolio == '[]':
+        return
+    return portfolio
+
+
+# json = {
+#     "currency":
+#         {
+#             "code": "EUR"
+#         },
+#     "label": "epita_ptf_4",
+#     "type": "front",
+#     "values":
+#         {
+#             "2012-01-02":
+#                 [
+#                     {
+#                         "asset":
+#                             {
+#                                 "asset": 906, "quantity": 2
+#                             }
+#                     },
+#                     {
+#                         "asset":
+#                             {
+#                                 "asset": 899, "quantity": 1
+#                             }
+#                     }
+#                 ]
+#         }
+# }
+def put_portfolio(assets):
+    portfolio_id = "1031"
+    my_assets = "{\"currency\":{\"code\":\"EUR\"},\"label\":\"epita_ptf_4\",\"type\":\"front\",\"values\":{\"2012-01-02\":[{\"asset\": { \"asset\": "
+    for asset in assets[:-1]:
+        my_assets += str(asset) + ", \"quantity\": " + "1" + "}}, {\"asset\": { \"asset\": "
+    my_assets += str(assets[-1]) + ", \"quantity\": " + "1" + "}}]}}"
+    my_json = json.loads(my_assets)
+    portfolio = put_data("/portfolio/" + portfolio_id + "/dyn_amount_compo", json=my_json)
+    if portfolio == '[]':
+        return
+    return portfolio
+
+
+def put_portfolio_exemple():
+    portfolio_id = "1031"
+    json = {
+        "currency":
+            {
+                "code": "EUR"
+            },
+        "label": "epita_ptf_4",
+        "type": "front",
+        "values":
+            {
+                "2012-01-02":
+                    [
+                        {
+                            "asset":
+                                {
+                                    "asset": 906, "quantity": 2
+                                }
+                        },
+                        {
+                            "asset":
+                                {
+                                    "asset": 899, "quantity": 1
+                                }
+                        }
+                    ]
+            }
+    }
+    portfolio = put_data("/portfolio/" + portfolio_id + "/dyn_amount_compo", json=json)
+    if portfolio == '[]':
+        return
+    return portfolio
 
 
 #Fix later
