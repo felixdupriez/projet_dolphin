@@ -17,6 +17,11 @@ def get_conversion_rates(currs):
         rates[curr] = float(rate)
     return rates
 
-def convert_to_eur(curr, amount):
-    value = 0
-    return value
+def convert_to_eur(rates, df):
+    for index, row in df.iterrows():
+        curr = df.at[index, "CURRENCY"]
+        amount = df.at[index, "CLOSE_2012_01_02"]
+        amount = amount / rates.get(curr)
+        df.loc[index, "CLOSE_2012_01_02"] = amount
+        df.loc[index, "CURRENCY"] = 'EUR'
+    return df
