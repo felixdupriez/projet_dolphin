@@ -8,7 +8,7 @@ def test_conversion():
     filtered_df = filtered_df.sort_values('Sharpe', ascending=False)
     currs = get_unique_currs(filtered_df)
     rates = get_conversion_rates(currs)
-    test = convert_to_eur(rates, filtered_df)
+    test = convert_to_eur(rates, filtered_df, "CLOSE_2012_01_02")
     export_as_csv(test, "test_curr_convert")
 
 if __name__ == '__main__':
