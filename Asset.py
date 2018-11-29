@@ -31,3 +31,23 @@ def check_portfolio(portfolio):
         if asset.get_nav() < (portfolio.sum / 100) or asset.get_nav() > (portfolio.sum / 10):
             return False
     return True
+
+def get_sum_corr(df, id_list):
+    dic = {}
+    for id in id_list:
+        sum = 0
+        for id_ in id_list:
+            sum += df[id][id_]
+        sum -= df[id][id]
+        dic[id] = abs(sum)
+    return dic
+
+def get_20_out_of_50(df, id_list):
+    for i in range(3):
+        dic = get_sum_corr(df, id_list)
+        dic = sorted(dic.iteritems(), reverse=True)
+        for index, key in enumerate(dic):
+            if index > 9:
+                break
+            dic.pop(key)
+    return dic
