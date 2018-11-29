@@ -1,4 +1,7 @@
-from Toolbox import *
+from Toolbox import get_data, json_to_data_frame, df_to_value, get_quote, get_ratio, post_data
+import numpy as np
+import pandas as pd
+import json
 
 
 def export_as_csv(df, name):
@@ -47,3 +50,32 @@ def first_close(df):
     df = df.drop('CLOSE_2012_01_03', 1)
     df = df.drop('CLOSE_2012_01_02', 1)
     df.to_csv('export5', sep='\t', encoding='utf-8', index=False)
+
+
+def get_correlation(asset_id, benchmark):
+    correlation = 19
+    content = json.dumps({'ratio': [correlation],
+            'asset': [asset_id],
+            'benchmark': benchmark,
+            'start_date': '2012-02-01',
+            'end_date': '2018-08-01',
+            'frequency': None})
+    return post_data("/ratio/invoke", json=content)
+
+
+def df_correlation(filtered_df):
+    listofitems = filtered_df['ASSET_DATABASE_ID'].tolist()
+    corr = pd.DataFrame(np.zeros(shape=(298, 298)), columns=listofitems, index=listofitems)
+    line = 0
+    for index, row in corr.iterrows():
+        print("Ligne %d/%d" % (++line, 298))
+        for column in corr:
+            if index == column:
+                corr[index][column] = 1     # 0.99939795304
+            elif corr[index][column] == 0:
+                tmp = get_correlation(int(index), int(column))
+                tmp = json.loads(tmp)[str(index)]['19']['value']
+                tmp = float(tmp.replace(',', '.'))
+                corr[index][column] = tmp
+                corr[column][index] = tmp
+    return corr
