@@ -43,6 +43,25 @@ def add_ratio_col(df):
     return df
 
 
+def get_ratio_asset(asset, ratio):
+    data = json.dumps({
+        'asset': [asset],
+        'ratio': [ratio],
+        'start_date': '2012-01-02',
+        'end_date': '2018-08-31'
+    })
+    result = post_data("/ratio/invoke", json=data)
+    if result == '[]':
+        return
+    return json.loads(result)[str(asset)][str(ratio)]['value']
+
+
+def add_ratio_col_sharpe(df):
+    for index, row in df.iterrows():
+        df.loc[index, "Sharpe2"] = get_ratio_asset(index, 20)
+    return df
+
+
 def first_close(df):
     df = pd.read_csv('export4', sep='\t')
     df = df[(df['CLOSE_2012_01_02'].notna()) | (df['CLOSE_2012_01_03'].notna())] #Conserver uniquement les actifs qui un prix de close

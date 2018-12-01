@@ -155,7 +155,7 @@ def put_portfolio(portfolio):
     portfolio = put_data("/portfolio/" + portfolio_id + "/dyn_amount_compo", json=my_json)
     if portfolio == '[]':
         return
-    return portfolio
+    return get_sharpe_portfolio()
 
 
 def put_portfolio_exemple():

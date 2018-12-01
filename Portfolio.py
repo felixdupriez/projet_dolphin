@@ -1,3 +1,5 @@
+from Toolbox import put_portfolio
+
 class Item:
     def __init__(self, asset, price, qty):
         self.asset = asset
@@ -43,3 +45,16 @@ class Portfolio:
             if item.price * item.qty / self.sum < 0.01 or item.price * item.qty / self.sum > 0.1:
                 return False
         return True
+
+    def optimize(self):
+        cur_sharpe = put_portfolio(self)
+        second = self
+        for item in second.items:
+            if item.price * (item.qty + 1) / self.sum < 0.1:
+                item.qty += 1
+                second.sum += item.price
+                tmp_sharpe = put_portfolio(second)
+                if tmp_sharpe > cur_sharpe:
+                    cur_sharpe = tmp_sharpe
+                else:
+                    put_portfolio(self)

@@ -15,6 +15,7 @@ def magic_power():
     id_list = df[0:50]['ASSET_DATABASE_ID'].tolist()
     return id_list
 
+
 def get_csv_from_list(df, id_list):
     result = import_csv('df_base', export=True)
     for id in id_list:
