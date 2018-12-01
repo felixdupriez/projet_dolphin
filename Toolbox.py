@@ -98,6 +98,19 @@ def get_ratio(asset_id):
     return ratio_invoke
 
 
+def get_sharpe_portfolio():
+    data = json.dumps({
+        'asset': [1031],
+        'ratio': [20],
+        'start_date': '2012-01-02',
+        'end_date': '2018-08-31'
+    })
+    result = post_data("/ratio/invoke", json=data)
+    if result == '[]':
+        return
+    return json.loads(result)['1031']['20']['value']
+
+
 def get_portfolio():
     portfolio_id = "1031"
     portfolio = get_data("/portfolio/" + portfolio_id +"/dyn_amount_compo")

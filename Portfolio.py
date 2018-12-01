@@ -19,7 +19,6 @@ class Portfolio:
         nb = 0
         while not self.check_portfolio():
             nb += 1
-            print('Iteration number', nb)
             for item in self.items:
                 while item.qty * item.price / self.sum < 0.01:
                     item.qty += 1

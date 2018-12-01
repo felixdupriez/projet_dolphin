@@ -39,11 +39,11 @@ def get_sum_corr(df, id_list):
 
 
 def get_20_out_of_50(df, id_list):
-    for i in range(30):
+    for i in range(6):
         dic = get_sum_corr(df, id_list)
         dic = sorted(dic.items(), reverse=True)
         for index, key in enumerate(dic):
-            if index > 0:
+            if index > 4:
                 break
             del dic[index]
             id_list.remove(key[0])
