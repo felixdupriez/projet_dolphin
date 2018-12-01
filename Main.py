@@ -2,6 +2,9 @@ from DataframeOperations import *
 from Toolbox import *
 from Conversion import *
 from Test import *
+from Portfolio import *
+from Asset import *
+from Correlation import *
 
 def generate_correlation_csv():
     df = import_csv('export6')
@@ -12,9 +15,7 @@ def generate_correlation_csv():
 
 
 if __name__ == '__main__':
-    df = import_csv('asset_correlation')
-    cf = import_csv('export6', export=True)
-    filtered_cf = cf[cf['CLOSE_2012_01_02'].notnull()]
-    filtered_cf = filtered_cf.sort_values('Performance', ascending=False)
-    df.set_index('Index', inplace=True)
+    df = import_csv('df_result_20_best')
+    p = Portfolio(df)
+    p.generate()
     print('End')

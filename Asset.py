@@ -17,12 +17,6 @@ class AssetChosen:
         return self.asset.close * self.quantity
 
 
-class Portfolio:
-    def __init__(self, assets, sum):
-        self.assets = assets
-        self.sum = sum
-
-
 def check_portfolio(portfolio):
     assets = portfolio.assets
     if assets.amount() != 20:
@@ -31,6 +25,7 @@ def check_portfolio(portfolio):
         if asset.get_nav() < (portfolio.sum / 100) or asset.get_nav() > (portfolio.sum / 10):
             return False
     return True
+
 
 def get_sum_corr(df, id_list):
     dic = {}
@@ -41,6 +36,7 @@ def get_sum_corr(df, id_list):
         sum -= df[str(id)][id]
         dic[id] = abs(sum)
     return dic
+
 
 def get_20_out_of_50(df, id_list):
     for i in range(3):
