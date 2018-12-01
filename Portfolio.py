@@ -15,18 +15,32 @@ class Portfolio:
         for item in self.items:
             self.sum += item.price      # calculer somme du portefeuille
 
-    def generate(self):
+    def generate2(self):
         nb = 0
         while not self.check_portfolio():
             nb += 1
             print('Iteration number', nb)
             for item in self.items:
-                while item.qty * item.price < self.sum / 100:
+                while item.qty * item.price / self.sum < 0.01:
+                    item.qty += 1
+                    self.sum += item.price
+                while item.qty * item.price / self.sum > 0.1:
+                    for item2 in self.items:
+                        i = 0.01
+                        while (item2.qty + 1) * item2.price / self.sum < i and item.qty * item.price / self.sum > 0.1:
+                            i += 0.01
+                            item2.qty += 1
+                            self.sum += item.price
+
+    def generate(self):
+        while not self.check_portfolio():
+            for item in self.items:
+                if item.price * item.qty / self.sum < 0.05:
                     item.qty += 1
                     self.sum += item.price
 
     def check_portfolio(self):
         for item in self.items:
-            if not item.price * item.qty > self.sum / 100 and item.price * item.qty < self.sum / 10:
+            if item.price * item.qty / self.sum < 0.01 or item.price * item.qty / self.sum > 0.1:
                 return False
         return True

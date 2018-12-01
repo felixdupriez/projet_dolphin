@@ -20,7 +20,28 @@ def print_portfolio(p):
 
 
 if __name__ == '__main__':
+    id_list = magic_power()
+    print("id_list1 : ")
+    print(id_list)
+    df = import_csv('asset_correlation')
+    df.set_index('Index', inplace=True)
+    dic = get_20_out_of_50(df, id_list)
+    df_all = import_csv('export6', export=True)
+    df_all.set_index('ASSET_DATABASE_ID', inplace=True)
+    result = get_csv_from_list(df_all, id_list)
+
+    #Convert and replace the currencies
+    rates = get_conversion_rates(get_unique_currs(result))
+    convert_to_eur(rates,result, "CLOSE_2012_01_02")
+
+
+    result = result.reset_index()
+    result = result.drop(['ASSET_DATABASE_ID'], axis=1)
+    result = result.rename(index=str, columns={"index": "ASSET_DATABASE_ID"})
+    export_as_csv(result, "df_result_20_best", index=False)
+
     df = import_csv('df_result_20_best')
+    df = df.sort_values('CLOSE_2012_01_02', ascending=False)
     p = Portfolio(df)
     p.generate()
     print_portfolio(p)

@@ -2,6 +2,7 @@ from DataframeOperations import import_csv, export_as_csv
 from Asset import *
 from Conversion import *
 
+
 def magic_formula(sharpe, perf, vol):
     return sharpe + perf - (10 * vol)
 
