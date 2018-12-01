@@ -132,12 +132,12 @@ def get_portfolio():
 #                 ]
 #         }
 # }
-def put_portfolio(assets):
+def put_portfolio(portfolio):
     portfolio_id = "1031"
     my_assets = "{\"currency\":{\"code\":\"EUR\"},\"label\":\"epita_ptf_4\",\"type\":\"front\",\"values\":{\"2012-01-02\":[{\"asset\": { \"asset\": "
-    for asset in assets[:-1]:
-        my_assets += str(asset) + ", \"quantity\": " + "1" + "}}, {\"asset\": { \"asset\": "
-    my_assets += str(assets[-1]) + ", \"quantity\": " + "1" + "}}]}}"
+    for item in portfolio.items[:-1]:
+        my_assets += str(item.asset) + ", \"quantity\": " + str(item.qty) + "}}, {\"asset\": { \"asset\": "
+    my_assets += str(portfolio.items[-1].asset) + ", \"quantity\": " + str(item.qty) + "}}]}}"
     my_json = json.loads(my_assets)
     portfolio = put_data("/portfolio/" + portfolio_id + "/dyn_amount_compo", json=my_json)
     if portfolio == '[]':

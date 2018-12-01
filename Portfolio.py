@@ -19,12 +19,11 @@ class Portfolio:
         nb = 0
         while not self.check_portfolio():
             nb += 1
-            print('Iteration number %d', nb)
+            print('Iteration number', nb)
             for item in self.items:
                 while item.qty * item.price < self.sum / 100:
                     item.qty += 1
                     self.sum += item.price
-        print('End')
 
     def check_portfolio(self):
         for item in self.items:
