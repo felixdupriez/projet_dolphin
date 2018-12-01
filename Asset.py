@@ -50,3 +50,14 @@ def get_20_out_of_50(df, id_list):
     return dic
 
 
+def brute_force():
+    #import random
+    max = 0
+    range_ = 10
+    for i in range(range_):
+        for j in range(range_):
+            for k in range(range_):
+                #magicformula(i,j,k)
+                sharpe = 0  # get_sharpe
+                if sharpe > max:
+                    print(i, j, k, max)
