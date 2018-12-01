@@ -25,3 +25,4 @@ def convert_to_eur(rates, df, target):
         df.loc[index, target] = amount
         df.loc[index, "CURRENCY"] = 'EUR'
     return df
+

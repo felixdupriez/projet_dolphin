@@ -52,3 +52,5 @@ def get_20_out_of_50(df, id_list):
             del dic[index]
             id_list.remove(key[0])
     return dic
+
+
