@@ -36,5 +36,5 @@ if __name__ == '__main__':
     rates = get_conversion_rates(get_unique_currs(result))
     convert_to_eur(rates,result, "CLOSE_2012_01_02")
 
-    export_as_csv(result, "df_result_20_best")
+    export_as_csv(result, "df_result_20_best", index=True)
     print("END")
